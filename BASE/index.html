@@ -1,0 +1,212 @@
+```html
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CELLI // ARCHIVO MAESTRO</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Fondo decorativo -->
+    <div class="background-grid"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    <main class="container">
+      <!-- ENCABEZADO -->
+      <header class="header">
+        <div class="system-status">
+          <span class="status-dot"></span>
+          SYSTEM ONLINE
+        </div>
+        <h1>CELLI<span>//</span>ARCHIVE</h1>
+        <p class="subtitle">PERSONAL KNOWLEDGE SYSTEM</p>
+      </header>
+      <!-- BUSCADOR -->
+      <section class="search-box">
+        <span class="search-icon">⌕</span>
+        <input
+          type="text"
+          id="search"
+          placeholder="Buscar proyecto, categoría..."
+          autocomplete="off"
+        />
+        <span class="search-command">CTRL + K</span>
+      </section>
+      <!-- CONTENIDO -->
+      <section class="categories">
+        <!-- PROGRAMACION -->
+        <div class="category">
+          <div class="category-header">
+            <div>
+              <span class="category-number">01</span>
+              <h2>PROGRAMACIÓN</h2>
+            </div>
+            <span class="category-count">03 PROJECTS</span>
+          </div>
+          <div class="items">
+            <a
+              class="item"
+              href="ROGRAMACION/proyecto_1/index.html"
+              data-search="programacion proyecto 1"
+            >
+              <span class="item-icon">01</span>
+              <div class="item-info">
+                <span class="item-title"> Proyecto 1 </span>
+                <span class="item-description"> Descripción del proyecto </span>
+              </div>
+              <span class="arrow">→</span>
+            </a>
+            <a
+              class="item"
+              href="PROGRAMACION/proyecto_2/index.html"
+              data-search="programacion proyecto 2"
+            >
+              <span class="item-icon">02</span>
+              <div class="item-info">
+                <span class="item-title"> Proyecto 2 </span>
+                <span class="item-description"> Descripción del proyecto </span>
+              </div>
+              <span class="arrow">→</span>
+            </a>
+            <a
+              class="item"
+              href="PROGRAMACION/proyecto_3/index.html"
+              data-search="programacion proyecto 3"
+            >
+              <span class="item-icon">03</span>
+              <div class="item-info">
+                <span class="item-title"> Proyecto 3 </span>
+                <span class="item-description"> Descripción del proyecto </span>
+              </div>
+              <span class="arrow">→</span>
+            </a>
+          </div>
+        </div>
+        <!-- MUSICA -->
+        <div class="category">
+          <div class="category-header">
+            <div>
+              <span class="category-number">02</span>
+              <h2>OTROS</h2>
+            </div>
+            <span class="category-count">02 PROJECTS</span>
+          </div>
+          <div class="items">
+            <a
+              class="item"
+              href="MUSICA/saxofon/index.html"
+              data-search="musica saxofon"
+            >
+              <span class="item-icon">01</span>
+              <div class="item-info">
+                <span class="item-title"> Saxofón </span>
+                <span class="item-description"> Estudios y material </span>
+              </div>
+              <span class="arrow">→</span>
+            </a>
+            <a
+              class="item"
+              href="MUSICA/jazz/index.html"
+              data-search="musica jazz"
+            >
+              <span class="item-icon">02</span>
+              <div class="item-info">
+                <span class="item-title"> Jazz </span>
+                <span class="item-description"> Referencias y estudios </span>
+              </div>
+              <span class="arrow">→</span>
+            </a>
+          </div>
+        </div>
+        <!-- PINTURA -->
+        <div class="category">
+          <div class="category-header">
+            <div>
+              <span class="category-number">03</span>
+              <h2>OTROS</h2>
+            </div>
+            <span class="category-count">02 PROJECTS</span>
+          </div>
+          <div class="items">
+            <a
+              class="item"
+              href="PINTURA/cuero/index.html"
+              data-search="pintura cuero"
+            >
+              <span class="item-icon">01</span>
+              <div class="item-info">
+                <span class="item-title"> Cuero </span>
+                <span class="item-description"> Materiales y técnicas </span>
+              </div>
+              <span class="arrow">→</span>
+            </a>
+            <a
+              class="item"
+              href="PINTURA/acrilicos/index.html"
+              data-search="pintura acrilicos"
+            >
+              <span class="item-icon">02</span>
+              <div class="item-info">
+                <span class="item-title"> Acrílicos </span>
+                <span class="item-description">
+                  Materiales y procedimientos
+                </span>
+              </div>
+              <span class="arrow">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+      <!-- FOOTER -->
+      <footer>
+        <span>CELLI // ARCHIVE</span>
+        <span>LOCAL KNOWLEDGE BASE</span>
+        <span id="clock">00:00:00</span>
+      </footer>
+    </main>
+    <script>
+      /* ==============================
+           RELOJ
+        ============================== */
+      function updateClock() {
+        const now = new Date();
+        const time = now.toLocaleTimeString("es-AR", {
+          hour12: false
+        });
+        document.getElementById("clock").textContent = time;
+      }
+      setInterval(updateClock, 1000);
+      updateClock();
+      /* ==============================
+           BUSCADOR
+        ============================== */
+      const searchInput = document.getElementById("search");
+      const items = document.querySelectorAll(".item");
+      searchInput.addEventListener("input", function () {
+        const query = this.value.toLowerCase().trim();
+        items.forEach(function (item) {
+          const text = item.dataset.search.toLowerCase();
+          if (text.includes(query)) {
+            item.style.display = "flex";
+          } else {
+            item.style.display = "none";
+          }
+        });
+      });
+      /* ==============================
+           CTRL + K
+        ============================== */
+      document.addEventListener("keydown", function (event) {
+        if (
+          (event.ctrlKey || event.metaKey) &&
+          event.key.toLowerCase() === "k"
+        ) {
+          event.preventDefault();
+          searchInput.focus();
+        }
+      });
+    </script>
+  </body>
+</html>
+```
