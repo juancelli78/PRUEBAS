@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>WPCRONOMETRO // DOCUMENTACIÓN</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #080a0d;
+            color: #e6edf2;
+            font-family: "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: min(900px, 92%);
+            margin: auto;
+            padding: 60px 0;
+        }
+
+        header {
+            border-bottom: 1px solid #20262c;
+            padding-bottom: 30px;
+            margin-bottom: 45px;
+        }
+
+        .system {
+            color: #00e5ff;
+            font-size: 10px;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+
+        h1 span {
+            color: #00e5ff;
+        }
+
+        .subtitle {
+            margin-top: 10px;
+            color: #69747e;
+            font-size: 11px;
+            letter-spacing: 3px;
+        }
+
+        .folder {
+            margin-bottom: 40px;
+        }
+
+        .folder-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding-bottom: 12px;
+            margin-bottom: 5px;
+
+            border-bottom: 1px solid #20262c;
+
+            color: #00e5ff;
+            font-size: 12px;
+            letter-spacing: 3px;
+        }
+
+        .folder-number {
+            color: #46515a;
+            font-family: monospace;
+            font-size: 11px;
+        }
+
+        .file {
+            display: block;
+
+            padding: 15px 15px;
+
+            color: #cbd3d9;
+            text-decoration: none;
+
+            border-bottom: 1px solid #151a1e;
+
+            font-size: 13px;
+
+            transition: 0.2s;
+        }
+
+        .file:hover {
+            color: #00e5ff;
+
+            padding-left: 25px;
+
+            background: rgba(0, 229, 255, 0.04);
+        }
+
+        .file::before {
+            content: "→ ";
+            color: #46515a;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding-top: 20px;
+
+            border-top: 1px solid #20262c;
+
+            color: #46515a;
+
+            font-size: 9px;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                padding-top: 35px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <main class="container">
+
+        <header>
+
+            <div class="system">
+                // DOCUMENTATION SYSTEM
+            </div>
+
+            <h1>
+                WP<span>CRONOMETRO</span>
+            </h1>
+
+            <div class="subtitle">
+                WATERPOLO CHRONOMETER // KNOWLEDGE BASE
+            </div>
+
+        </header>
+
+
+        <!-- =========================
+             BIENVENIDA
+        ========================== -->
+
+        <section class="folder">
+
+            <div class="folder-title">
+                <span class="folder-number">01</span>
+                BIENVENIDA
+            </div>
+
+            <a class="file" href="BIENVENIDA/general.txt">
+                General
+            </a>
+
+            <a class="file" href="BIENVENIDA/descripcion.txt">
+                Descripción
+            </a>
+
+            <a class="file" href="BIENVENIDA/estado.txt">
+                Estado actual
+            </a>
+
+        </section>
+
+
+        <!-- =========================
+             CONTROL
+        ========================== -->
+
+        <section class="folder">
+
+            <div class="folder-title">
+                <span class="folder-number">02</span>
+                CONTROL
+            </div>
+
+            <a class="file" href="CONTROL/control.txt">
+                Control
+            </a>
+
+            <a class="file" href="CONTROL/configuracion.txt">
+                Configuración
+            </a>
+
+        </section>
+
+
+        <!-- =========================
+             CRONOMETRO
+        ========================== -->
+
+        <section class="folder">
+
+            <div class="folder-title">
+                <span class="folder-number">03</span>
+                CRONÓMETRO
+            </div>
+
+            <a class="file" href="CRONOMETRO/funcionamiento.txt">
+                Funcionamiento
+            </a>
+
+            <a class="file" href="CRONOMETRO/variables.txt">
+                Variables
+            </a>
+
+        </section>
+
+
+        <!-- =========================
+             PROBLEMAS
+        ========================== -->
+
+        <section class="folder">
+
+            <div class="folder-title">
+                <span class="folder-number">04</span>
+                PROBLEMAS
+            </div>
+
+            <a class="file" href="PROBLEMAS/problemas.txt">
+                Problemas conocidos
+            </a>
+
+            <a class="file" href="PROBLEMAS/soluciones.txt">
+                Soluciones
+            </a>
+
+        </section>
+
+
+        <footer>
+            WPCRONOMETRO // DOCUMENTATION ARCHIVE
+        </footer>
+
+    </main>
+
+</body>
+
+</html>
+
