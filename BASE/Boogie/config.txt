@@ -1,0 +1,131 @@
+// config.js
+//situacion inicial. Que despues en funcion de lo que elijas se actualiza)
+export let opcElegida = { Qletras: 5, Duracion: 1 };
+
+const t4 = document.getElementById("4x4");
+const t5 = document.getElementById("5x5");
+const t6 = document.getElementById("6x6");
+
+const d1 = document.getElementById("dura1");
+const d2 = document.getElementById("dura2");
+const d3 = document.getElementById("dura3");
+
+// selecciono todos los botones de un div.“Buscá todos los elementos con clase .chip que estén dentro de un elemento .choice.”
+const Cantletras = document.querySelectorAll(".choicetam .chip");
+const Durac = document.querySelectorAll(".choicedura .chip");
+
+//Desenmarcar botones de la duracion o del tamaño.
+function desenmarcarBotones(y) {
+  y.forEach((boton) => boton.classList.remove("seleccionado"));
+}
+
+Cantletras.forEach((boton) => {
+  boton.addEventListener("click", () => {
+    desenmarcarBotones(Cantletras); //desenmarcas todos los botones
+    opcElegida.Qletras = parseInt(boton.textContent); //actualizamos el objeto
+    boton.classList.add("seleccionado"); // cambiamos el foramto
+    updateHint(opcElegida.Duracion, opcElegida.Qletras); //actualizar el hint.
+  });
+});
+
+//----------lo reemplazo todo esto por un forEach----------
+
+// t4.addEventListener("click", () => {
+//   desenmarcarBotones(Cantletras);
+//   opcElegida.Qletras = 4;
+//   t4.classList.add("seleccionado");
+// });
+// t5.addEventListener("click", () => {
+//   desenmarcarBotones(Cantletras);
+//   opcElegida.Qletras = 5;
+//   t5.classList.add("seleccionado");
+// });
+// t6.addEventListener("click", () => {
+//   desenmarcarBotones(Cantletras);
+//   opcElegida.Qletras = 6;
+//   t6.classList.add("seleccionado");
+// });
+
+Durac.forEach((boton) => {
+  boton.addEventListener("click", () => {
+    desenmarcarBotones(Durac); //desenmarcas todos los botones
+    opcElegida.Duracion = parseInt(boton.textContent); //actualizamos el objeto
+    boton.classList.add("seleccionado"); // cambiamos el foramto
+    updateHint(opcElegida.Duracion, opcElegida.Qletras); //actualizar el hint.
+  });
+});
+
+//----------lo reemplazo todo esto por un forEach----------
+// d1.addEventListener("click", () => {
+//   desenmarcarBotones(Durac);
+//   opcElegida.Duracion = 1;
+//   d1.classList.add("seleccionado");
+// });
+// d2.addEventListener("click", () => {
+//   desenmarcarBotones(Durac);
+//   opcElegida.Duracion = 2;
+//   d2.classList.add("seleccionado");
+// });
+// d3.addEventListener("click", () => {
+//   desenmarcarBotones(Durac);
+//   opcElegida.Duracion = 3;
+//   d3.classList.add("seleccionado");
+// });
+
+//-----------------------------------------
+
+//Updatear el hint: resultado final.
+const hintText = document.getElementById("selectionHint");
+function updateHint(dur, grilla) {
+  hintText.textContent = `La duracion de la partida será de ${dur} minutos con una grilla de ${grilla}x${grilla}`;
+}
+updateHint(opcElegida.Duracion, opcElegida.Qletras);
+console.log(opcElegida.Duracion, opcElegida.Qletras);
+
+// ----------------------------------------------
+// Estado mínimo de la configuración (pantalla 1)
+// const state = {
+//   grid: 5,
+//   minutes: 1,
+// };
+
+// const chipGroups = document.querySelectorAll(".choice");
+
+// chipGroups.forEach((group) => {
+//   group.addEventListener("click", (e) => {
+//     const btn = e.target.closest(".chip");
+//     if (!btn) return;
+
+//     const isGrid = btn.hasAttribute("data-grid");
+//     const isMins = btn.hasAttribute("data-mins");
+
+//     // Desmarcar todas las chips del grupo
+//     group
+//       .querySelectorAll(".chip")
+//       .forEach((c) => c.setAttribute("aria-pressed", "false"));
+
+//     // Marcar la que se clickeó
+//     btn.setAttribute("aria-pressed", "true");
+
+//     // Actualizar estado
+//     if (isGrid) state.grid = parseInt(btn.dataset.grid, 10);
+//     if (isMins) state.minutes = parseInt(btn.dataset.mins, 10);
+
+//     updateHint();
+//   });
+// });
+
+// function updateHint() {
+//   const hint = document.getElementById("selectionHint");
+//   if (!hint) return;
+
+//   hint.textContent = `Grilla ${state.grid}×${state.grid} • ${
+//     state.minutes
+//   } minuto${state.minutes > 1 ? "s" : ""}`;
+// }
+
+// Inicializar texto al cargar
+// updateHint();
+
+// Exponer la configuración para otros scripts (game.js)
+// window.boogleConfig = state;

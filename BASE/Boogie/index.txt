@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Boogie Man es un juego de palabras online donde tenés que formar la mayor cantidad de palabras posibles antes de que se acabe el tiempo."
+    />
+    <title>BOOGIE MAN</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <main class="container">
+      <!-- INICIO PANTALLA 1: configuración -->
+      <section id="screen-config" class="card blink-effect">
+        <header>
+          <div class="logo2">
+            <img src="./Logo/Boogie Man.JPG" alt="" />
+            <p class="lead">CONFIGURAR PARTIDA</p>
+            <div class="sr-only">
+              Boogie man es un juego de palabras online inspirado en las sopas
+              de letras. El objetivo es formar la mayor cantidad de palabras
+              posibles dentro del tiempo límite, conectando letras en una grilla
+              aleatoria. Desarrollado en HTML, CSS y JavaScript.
+            </div>
+          </div>
+        </header>
+
+        <section class="grid">
+          <div class="group" id="grid-size">
+            <h2>TAMAÑO DE LA GRILLA</h2>
+            <div class="choice choicetam">
+              <button id="4x4" class="chip tamaño4">4×4</button>
+              <button id="5x5" class="chip tamaño5 seleccionado">5×5</button>
+              <button id="6x6" class="chip tamaño6">6×6</button>
+            </div>
+            <p class="hint">
+              Elegí cuan grande querés que sea la grilla. Podés jugar 4×4, 5×5 o
+              6×6.
+            </p>
+          </div>
+
+          <div class="group" id="duration">
+            <h2>DURACION</h2>
+            <div class="choice choicedura">
+              <button id="dura1" class="chip durac1 seleccionado">1 min</button>
+              <button id="dura2" class="chip durac2">2 min</button>
+              <button id="dura3" class="chip durac3">3 min</button>
+            </div>
+            <p class="hint">
+              Elegí la duracion del juego: 1, 2 o 3 minutos. junto con el tamaño
+              de la grilla
+            </p>
+          </div>
+
+          <div class="row">
+            <button id="startBtn" class="btn">START</button>
+            <span class="hint" id="selectionHint"></span>
+            <audio id="gameAudio-boogieman" loop style="display: none">
+              <source
+                src="./Sonidos/Boogie Man - recortado.mp3"
+                type="audio/mp3"
+              />
+              Tu navegador no soporta el audio.
+            </audio>
+            <audio id="gameAudio-cuentaregresiva" style="display: none">
+              <source src="./Sonidos/Cuenta regresiva.mp3" type="audio/mp3" />
+              Tu navegador no soporta el audio.
+            </audio>
+          </div>
+        </section>
+
+        <footer>
+          <span>Dark mode • Mobile first</span>
+          <span>v0.1 Landing</span>
+        </footer>
+      </section>
+      <!-- FIN PANTALLA 1: configuración -->
+      <!-- INICIO PANTALLA 2: juego -->
+      <section id="screen-game" class="card screen-hidden">
+        <img class="logo-pantalla3" src="./Logo/Boogie Man.JPG" alt="" />
+        <div id="preCountdown" class="countdown">5</div>
+        <div id="grid-board" class="grid-board"></div>
+      </section>
+
+      <!-- FIN PANTALLA 2: juego -->
+      <!-- INCIO PANTALLA 3: letras -->
+      <section id="screen-letters" class="card screen-hidden">
+        <div class="screen-3">
+          <div class="boggle-frame">
+            <img class="logo-pantalla3" src="./Logo/Boogie Man.JPG" alt="" />
+            <div class="boggle-main">
+              <div id="board" class="board"></div>
+            </div>
+          </div>
+          <aside class="side-timer">
+            <div class="circle-container">
+              <svg width="200" height="200" viewBox="0 0 120 120">
+                <circle class="circle-background" cx="60" cy="60" r="45" />
+                <circle class="circle-progress" cx="60" cy="60" r="45" />
+                <!-- prettier-ignore -->
+                <text class="cuentaregres2" id="cuentaregres2" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" transform="rotate(90 60 60)"
+                ></text>
+              </svg>
+              <!-- <div class="cuentaregres" id="cuentaregres">10</div> -->
+              <div class="imp-pantalla">
+                <button id="capture-btn" style="animation: none">
+                  Impresion de Pantalla
+                </button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+      <!-- FIN PANTALLA 3: letras -->
+      <!-- INCIO PANTALLA 4 - PANTALLA NEGRA + CUADRO A PROMOCIONAR -->
+      <div
+        id="screen-end"
+        class="card screen-hidden"
+        style="width: 100vw; height: 100vh"
+      ></div>
+      <!-- FIN PANTALLA 4:  PANTALLA NEGRA + CUADRO A PROMOCIONAR  -->
+    </main>
+    <!-- CARGA DE OPCIONES, PANTALLA DE INICIO -->
+    <script type="module" src="config.js"></script>
+    <!-- CUENTA REGRESIVA +  CARGA DE GRILLA-->
+    <script type="module" src="game.js"></script>
+    <!-- RESULTADOS  +  REVISION-->
+    <script type="module" src="timer.js"></script>
+    <!-- IMPRESION DE PANTALLA -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+      integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,416 @@
+//-------------------- Apretar START.--------------------------------------------
+//
+
+// HOY. GRILLA CON LETRAS +  COUNTDOWN TIMER.
+// ✔ ULTIMOS DIEZ SEGUNDOS, PASEN COMO SI FUERAN 3 SEGUNDOS.
+// ✔ ULTIMOS DIEZ SEGUNDOS, VIBREN LAS LETRAS
+// CUMPLIR CON LAS CONDICIONES DE LA GRILLA:
+//             ✔ VOCALES EN LA DIAGONAL.
+//             ✔ LETRAS PUEDEN APARECER EN 90º O DADAS VUELTAS.
+//             ✔ EVITAR REPETIR LETRAS CON EL DE ARRIBA O EL DE LOS COSTADOS.
+
+// No es un spinner >>> son una carga indeterminada.
+// ✔ CSS Circular Progress Bar
+// ✔ CSS Countdown Timer
+// ✔ CSS Determinate Loader
+// ✔ CSS Progress Countdown Animation
+
+import { opcElegida } from "./config.js";
+
+const screenConfig = document.getElementById("screen-config");
+const screenGame = document.getElementById("screen-game");
+const startButton = document.getElementById("startBtn");
+const preCountdown5a1 = document.getElementById("preCountdown");
+const gridBoard1 = document.getElementById("grid-board");
+const gridBoard2 = document.getElementById("screen-letters");
+let opcionElegidaActualizada; // Declaramos la variable globalmente
+let matrizB; //esto lo hice para crear el boton impresion de pantalla.
+const gameAudio = document.getElementById("gameAudio-boogieman"); //variable para ejecutar audio boogieman.
+const gameAudio2 = document.getElementById("gameAudio-cuentaregresiva"); //variable para ejecutar audio, cuenta regresiva
+let audioStarted = false; // Variable para controlar si el audio ya ha comenzado
+const screenEnd = document.getElementById("screen-end"); // Mostrar la imagen en la pantalla (por ejemplo, en el contenedor de "screen-end")
+
+// Lista de imágenes almacenadas en Google Drive - NO FUNCO, EL TEMA ES EL PROXY.
+// const imageUrls = [
+//   "https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=view&id=1ft4NOHwaRM2muOAbd4ze3Xapwhl5uwOl", // Cambia por tu ID de imagen
+//   "https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=view&id=1p9iHcONdNJUV4WFHDd4JPyFN1LFLeeBp",
+//   "https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=view&id=1fsH5Y-p4cZhsmIy8u1TGrkMAmC29JI2u",
+//   "https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=view&id=1oNZL1xWfr9n2HGYD6YUQhJoIyRwKXSfr",
+//   "https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=view&id=1Rcny_7ffttjgomfax3FyckT6zSI1dyPN",
+//   "https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=view&id=1ZdWhiqrJr3vrD5aUDxoC_qzYFx8hKH9_",
+//   // Agrega más imágenes según sea necesario
+// ];
+
+const imageUrls = [
+  "./Arte/1.jpg",
+  "./Arte/2.jpg",
+  "./Arte/3.jpg",
+  "./Arte/4.jpg",
+  "./Arte/5.jpg",
+  "./Arte/6.jpg",
+];
+
+//REPRODUCCION DEL AUDIO.
+window.addEventListener("click", function () {
+  if (!audioStarted) {
+    // Asegúrate de que no se inicie más de una vez
+    gameAudio.play(); // Reproducir solo si no está ya en reproducción
+    audioStarted = true; // Marcar que el audio ya comenzó
+    console.log("Audio comenzado después del clic");
+  }
+});
+
+//QUE ES LO QUE SUCEDE AL PRESIONAR "START"
+startButton.addEventListener("click", () => {
+  screenConfig.classList.add("screen-hidden");
+  screenGame.classList.remove("screen-hidden");
+  //Para que no apareciera el borde en la cuenta regresiva tuve que borrar todas estas propiedades.
+  screenGame.style.border = "none"; // sacar el border
+  screenGame.style.boxShadow = "none"; //sacar el boxShadow
+  screenGame.style.background = "none"; //sacar el boxShadow
+  opcionElegidaActualizada = opcElegida;
+  console.log(opcionElegidaActualizada);
+  gameAudio.pause();
+  console.log("Audio detenido y cambiando de pantalla.");
+  //ARRANCA CUENTA REGRESIVA.
+  startPreCountdown();
+  //DESAPARECE LA CUENTA REGRESIVA Y APARECE LA GRILLA.
+  // screenGame.classList.add("screen-hidden");
+  // gridBoard1.classList.remove("scree");
+  //grid - board;
+  //ACTUALIZ OPCION ELEGIDA.
+  // Detener el audio al cambiar de pantalla
+});
+
+//CUENTA REGRESIVA
+function startPreCountdown() {
+  const countDownDuration = 5;
+  const delayInMiliseconds = 1100; // 0.9 segundos = igual que la animacion // 2 segundos= 2000 milisegundos
+
+  for (let n = countDownDuration; n >= 0; n--) {
+    const delayTime = (countDownDuration - n) * delayInMiliseconds;
+    setTimeout(() => {
+      console.log(preCountdown5a1);
+      preCountdown5a1.classList.remove("countdown-anim");
+      void preCountdown5a1.offsetWidth; //magia del chatgpt.=> Forzar el 'reflow' (hacer que el navegador reconozca que debe reiniciar)
+      if (n > 0) {
+        preCountdown5a1.textContent = n;
+      } else {
+        preCountdown5a1.textContent = "YA";
+        setTimeout(() => {
+          const matrizGenerada = cargarGrillaDOM(); // Ves la grilla solamente en la consola,
+          gridBoard2.classList.remove("screen-hidden");
+          renderizaBoard(matrizGenerada);
+          console.log("gridBoard2:", gridBoard2);
+          console.log(opcionElegidaActualizada);
+
+          startCountdown();
+        }, 1000);
+        return;
+      }
+      preCountdown5a1.classList.add("countdown-anim");
+      gameAudio2.play();
+    }, delayTime);
+  }
+}
+
+//-----------------INICIO: LETRAS - POSIBILIDADES ---------------------
+const VOWELS = ["A", "E", "I", "O", "U"];
+// Abecedario con mayor probabilidad de L, M, N, P, R, S, T, V, B
+// prettier-ignore
+const BASE_CONSONANTS = [
+  "B",  "C",  "D",  "F",  "G",  "H",  "J",  "K",  "L",  "M",  "N",  "P",  "Q",  "R",  "S",  "T",  "V",  "W",  "X",  "Y",  "Z",];
+// Peso extra para las más usadas
+// prettier-ignore
+const WEIGHTED_EXTRA = [  "L",  "L",  "M",  "M",  "N",  "N",  "P",  "P",  "R",  "R",  "S",  "S",  "T",  "T",  "V",  "V",  "B",  "B",];
+const ALL_LETTERS = [...VOWELS, ...BASE_CONSONANTS, ...WEIGHTED_EXTRA];
+const ALL_CONSONANTS = [...BASE_CONSONANTS, WEIGHTED_EXTRA];
+//---------------- FIN: LETRAS - POSIBILIDADES ---------------------
+
+//HACER LA GRILLA
+function cargarGrillaDOM() {
+  screenGame.classList.add("screen-hidden"); //DESAPARECE EL YA.
+  const tamanio1 = opcElegida.Qletras;
+  const m = rellenarMatriz(tamanio1);
+  console.table(m);
+  return m;
+}
+
+function crearMatrizVacia(tamanio) {
+  const matriz = [];
+  for (let fila = 0; fila < tamanio; fila++) {
+    matriz[fila] = [];
+    for (let col = 0; col < tamanio; col++) {
+      matriz[fila][col] = null;
+    }
+  }
+  return matriz; //
+}
+
+function elegirLetra(opciones) {
+  const i = Math.floor(Math.random() * opciones.length);
+  return opciones[i]; //opciones es una matriz, y opciones[i] es un letra
+}
+
+function validarCondiciones(matrizB, fila, columna, letra) {
+  //no repetir con el de izquierda
+  if (fila > 0 && matrizB[fila][columna - 1] == letra) {
+    return false;
+  }
+  //no repetir con el de arriba
+  if (fila > 0 && matrizB[fila - 1][columna] == letra) {
+    return false;
+  }
+  //no repetir con el de la derecha - es al pedo.
+  // if (fila > 0 && matrizB[fila][columna + 1] == letra) {
+  //   return false;
+  // }
+  return true; //si paso los check entonces es true.
+}
+function rellenarMatriz(tamanio) {
+  // Tiene 3 helper functions, definidas arriba.
+  const matrizA = crearMatrizVacia(tamanio); // crearMatrizVacia te devuelve una matriz,que la titulo matrizA
+  //la recorres rellenandola.
+  for (let fil = 0; fil < matrizA.length; fil++) {
+    for (let col = 0; col < matrizA.length; col++) {
+      let letra = null;
+      const MAX_INTENTOS = 50; // para encontrar el error
+      for (let intentos = 0; intentos < MAX_INTENTOS; intentos++) {
+        //Primer IF - vocales en la diagonal
+        if (fil === col) {
+          letra = elegirLetra(VOWELS);
+        } else {
+          letra = elegirLetra(ALL_LETTERS);
+        }
+        //segundo IF - VALIDACION DE LA DERECHA, IZQ, ARRI QUE NO SE REPITA.
+        if (validarCondiciones(matrizA, fil, col, letra)) {
+          break; // salimos → letra válida
+        } else {
+          letra = null;
+        }
+      }
+      if (letra == null) {
+        throw new Error(`No se encontro letra valida en ${fil} y ${col}`);
+      }
+      matrizA[fil][col] = letra;
+    }
+  }
+  return matrizA;
+}
+
+function renderizaBoard(matrizB) {
+  const board = document.querySelector("#board");
+  const size = matrizB.length;
+  //  board.style.display = "grid"; ← ya esta especificado en el css.
+  board.style.gridTemplateColumns = `repeat(${size},1fr)`; //le decis cuantas columnas va a tener en funcion del tamanio
+  board.innerHTML = ""; // ← limpia el tablero visual
+  const angles = [0, 90, 180, 270];
+  for (let fila = 0; fila < size; fila++) {
+    for (let columna = 0; columna < size; columna++) {
+      const letra = matrizB[fila][columna]; // rellenamos la matriz.
+      const casillero = document.createElement("div");
+      casillero.classList.add("cell", "cell-letter");
+      casillero.textContent = letra;
+      //   <div class="cell cell-letter">A</div>
+      //   <div class="cell cell-letter">E</div>
+      //   <div class="cell cell-letter">G</div>
+      //   <div class="cell cell-letter">T</div>
+      const randomAngle = angles[Math.floor(Math.random() * angles.length)];
+
+      // guardamos el ángulo en una variable CSS para usarlo en la animación
+      casillero.style.setProperty("--angle", `${randomAngle}deg`);
+
+      // rotamos la letra normalmente
+      casillero.style.transform = `rotate(${randomAngle}deg)`;
+      board.appendChild(casillero); // FUNDAMENTAL => agregar dentro de #board los divs con clase .cell
+      // te queda asi:
+      // <div id="board">
+      //   <div class="cell cell-letter">A</div>
+      //   <div class="cell cell-letter">E</div>
+      //   <div class="cell cell-letter">G</div>
+      //   <div class="cell cell-letter">T</div>
+      //   ...
+      // </div>;
+    }
+  }
+
+  //BOTON. Impresion de pantalla. - tiene que estar formar parte de la funcion de renderizado.
+  // Ahora que el tablero está renderizado, capturamos la imagen
+  console.log("Tablero renderizado, capturando pantalla...");
+  /*INICIO. Audio de cuenta regresiva se para*/
+  gameAudio.pause();
+  console.log("Audio detenido y cambiando de pantalla.");
+  /*FIN. Audio de cuenta regresiva se para*/
+  html2canvas(board)
+    .then((canvas) => {
+      // Crear un enlace de descarga
+      const downloadLink = document.createElement("a");
+
+      // Convertir el canvas a una imagen en formato PNG
+      const imgData = canvas.toDataURL("image/png");
+
+      // Establecer el atributo href del enlace como la URL de la imagen
+      downloadLink.href = imgData;
+      downloadLink.download = "captura_tablero.png"; // El nombre del archivo que se descargará
+
+      // Simular un clic en el enlace para iniciar la descarga
+      downloadLink.click();
+    })
+    .catch((error) => {
+      console.error("Error al generar la captura de pantalla:", error);
+    });
+  //BOTON PARA IMPRESION DE PANTALLA
+  document.getElementById("capture-btn").addEventListener(
+    "click",
+    function () {
+      console.log("Botón clickeado", matrizB);
+      // Llamar a la función de renderizado (debe ser definida)
+      renderizaBoard(matrizB); // Suponiendo que 'matrizB' es tu matriz actual
+    },
+    { once: true }
+  );
+}
+
+//FUNCIONES PARA QUE VIBREN LOS ULTIMOS 10 SEGUNDOS
+function startLetterVibration() {
+  const letters = document.querySelectorAll(".cell-letter");
+  letters.forEach((cell) => cell.classList.add("vibrate"));
+}
+
+function stopLetterVibration() {
+  const letters = document.querySelectorAll(".cell-letter.vibrate");
+  letters.forEach((cell) => cell.classList.remove("vibrate"));
+}
+
+//CUENTA REGRESIVA EN EL JUEGO CON LA SOPA DE LETRAS
+function startCountdown() {
+  let countdownTime = opcionElegidaActualizada.Duracion * 60; // segundos totales
+  const countdownText = document.getElementById("cuentaregres2");
+  const circleProgress = document.querySelector(".circle-progress");
+
+  const circleLength = 283;
+
+  let timeLeft = countdownTime;
+  let intervalTime = 1000; // 1 segundo
+  let hasStartedVibration = false; // 👈 nuevo flag
+
+  // intervalo normal
+  var interval = setInterval(function updateCountdown() {
+    timeLeft--;
+    countdownText.textContent = timeLeft;
+
+    const offset = circleLength - circleLength * (timeLeft / countdownTime);
+    circleProgress.style.strokeDashoffset = offset;
+
+    // 👉 activar vibración en los últimos 10 segundos
+    if (!hasStartedVibration && timeLeft <= 10 && timeLeft > 0) {
+      startLetterVibration();
+      hasStartedVibration = true;
+    }
+
+    // acelerar en los últimos 10 segundos (2x speed)
+    if (timeLeft <= 10 && intervalTime !== 500) {
+      intervalTime = 500;
+      clearInterval(interval);
+      startAcceleratedCountdown();
+    }
+
+    if (timeLeft <= 0) {
+      clearInterval(interval);
+      stopLetterVibration(); // 👈 apagar vibración
+      countdownText.textContent = "¡Tiempo!";
+      circleProgress.style.stroke = "#4CAF50";
+      gridBoard2.classList.add("screen-hidden");
+      showRandomImage();
+    }
+  }, intervalTime);
+
+  // intervalo acelerado
+  function startAcceleratedCountdown() {
+    var acceleratedInterval = setInterval(
+      function updateAcceleratedCountdown() {
+        timeLeft--;
+        countdownText.textContent = timeLeft;
+
+        const offset = circleLength - circleLength * (timeLeft / countdownTime);
+        circleProgress.style.strokeDashoffset = offset;
+
+        // por si la aceleración arranca justo en 10
+        if (!hasStartedVibration && timeLeft <= 10 && timeLeft > 0) {
+          startLetterVibration();
+          hasStartedVibration = true;
+        }
+
+        if (timeLeft <= 0) {
+          clearInterval(acceleratedInterval);
+          stopLetterVibration(); // 👈 apagar vibración
+          countdownText.textContent = "¡Tiempo!";
+          countdownText.style.fontSize = "1rem";
+          circleProgress.style.stroke = "#4CAF50";
+          gridBoard2.classList.add("screen-hidden");
+          showRandomImage();
+        }
+      },
+      intervalTime
+    ); // 500ms
+  }
+}
+
+//PANTALLA FINAL + CUADRO
+function showRandomImage() {
+  // Seleccionar una imagen aleatoria de la lista
+  const randomIndex = Math.floor(Math.random() * imageUrls.length);
+  const randomImageUrl = imageUrls[randomIndex];
+
+  // checkImagePermissions(randomImageUrl); // Comprobar si la imagen tiene permisos adecuados antes de cargarla - ESTA ABAJO, por el tema de proxy.
+
+  // Crear un elemento <img> para mostrar la imagen
+  const imageElement = document.createElement("img");
+  imageElement.src = randomImageUrl;
+  imageElement.alt = "Imagen aleatoria";
+  imageElement.style.maxWidth = "100%"; // Ajusta el tamaño según lo necesites
+  imageElement.style.height = "auto"; // Mantiene la proporción de la imagen
+
+  // Verificar si la imagen se carga correctamente
+  imageElement.onerror = function () {
+    console.log("Error al cargar la imagen: " + randomImageUrl);
+  };
+  // Mostrar la imagen en la pantalla (por ejemplo, en el contenedor de "screen-end")
+  const screenEnd = document.getElementById("screen-end");
+
+  // Cambiar el fondo de la pantalla a negro
+  screenEnd.style.backgroundColor = "black"; // Establece el fondo negro
+  screenEnd.style.display = "flex"; // Usamos flexbox para centrar la imagen
+  screenEnd.style.alignItems = "center"; // Centrar verticalmente
+  screenEnd.style.justifyContent = "center"; // Centrar horizontalmente
+  screenEnd.style.height = "100vh"; // Asegura que la pantalla ocupe toda la altura de la ventana
+  screenEnd.classList.remove("screen-hidden"); // Asegúrate de que la pantalla de final del juego sea visible
+  screenEnd.appendChild(imageElement); // Añadir la imagen a la pantalla
+}
+
+//PERMISOS PARA EL PROXY QUE NO FUNCIONARON.
+// function checkImagePermissions(imageUrl) {
+//   fetch(imageUrl, { method: "HEAD" }) // Hacer una solicitud HEAD para obtener solo los encabezados
+//     .then((response) => {
+//       if (response.ok) {
+//         console.log("La imagen es accesible.");
+//       } else if (response.status === 403) {
+//         console.error("Error de permisos: la imagen está restringida.");
+//         alert("Error de permisos: la imagen está restringida.");
+//       } else if (response.status === 404) {
+//         console.error("Error 404: la imagen no se encuentra.");
+//         alert("Error 404: la imagen no se encuentra.");
+//       } else {
+//         console.error(
+//           "Error al acceder a la imagen. Código de estado: " + response.status
+//         );
+//         alert(
+//           "Error al acceder a la imagen. Código de estado: " + response.status
+//         );
+//       }
+//     })
+//     .catch((error) => {
+//       console.error("Error al intentar acceder a la imagen:", error);
+//       alert("Error al intentar acceder a la imagen.");
+//     });
+// }

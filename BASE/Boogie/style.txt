@@ -1,0 +1,449 @@
+:root {
+  --bg: #0b0d12;
+  --card: #121622;
+  --muted: #aab2c0;
+  --text: #e8edf5;
+  --accent: #7aa2ff;
+  --accent-2: #66e5b3;
+  --danger: #ff6b6b;
+  --ring: 0 0 0 3px rgba(122, 162, 255, 0.35);
+  --radius: 16px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+  width: 100vw;
+}
+
+.sr-only {
+  position: absolute; /* lo saca del flujo normal */
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden; /* oculta lo que sobresalga */
+  clip: rect(0, 0, 0, 0); /* recorta toda el área visible */
+  border: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+    Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: radial-gradient(
+    1200px 800px at 20% 0%,
+    #0e1424 0%,
+    var(--bg) 60%
+  );
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.container {
+  width: 100%;
+  max-width: 32.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/*INICIO ANIMACION DE PARPADEO PANTALLA INICIAL*/
+/* Animación tipo pestañeo */
+.blink-effect {
+  animation: blinkAnimation 1.5s ease-in-out 3;
+}
+
+@keyframes blinkAnimation {
+  0% {
+    opacity: 1;
+  } /* Normal */
+  8% {
+    opacity: 0;
+  } /* Cierra rápido */
+  16% { 
+    opacity: 1;
+  } /* Abre rápido */
+
+  /* Pausa larga sin parpadear */
+  100% {
+    opacity: 1;
+  }
+}
+/*FIN ANIMACION DE PARPADEO PANTALLA INICIAL*/
+
+.card {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.01)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  backdrop-filter: blur(6px);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.logo2 {
+  display: flex;
+  flex-direction: column;
+  /* border: 1rem dashed red; */
+}
+
+h1 {
+  font-size: 28px;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+p.lead {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  letter-spacing: 0.5rem;
+  margin: 4px 0 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.grid {
+  display: grid;
+  gap: 2.5rem;
+  margin-top: 18px;
+}
+.group {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.group h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05rem;
+}
+.choice {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.625rem;
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.582);
+  margin-top: 0.2rem; /* más pegado */
+  text-align: left; /* centrado bajo el botón */
+}
+
+p.hint {
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+#selectionHint {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.959);
+  margin: 1rem;
+}
+
+.chip {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, #1e3a8a 0%, #000814 100%);
+  padding: 0.9rem 0.75rem; /* 👈 aumenta la altura */
+  border-radius: 0.9rem;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.03rem;
+  cursor: pointer;
+  transition: transform 0.06s ease, border-color 0.15s ease,
+    box-shadow 0.15s ease;
+  user-select: none;
+  font-size: 1rem; /* 👈 texto un poco más grande */
+  min-height: 3.2rem; /* 👈 garantiza altura mínima */
+  color: white;
+}
+
+/* para que tenga ambas clases va sin espacios */
+.chip.seleccionado {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(122, 162, 255, 0.2);
+  background: linear-gradient(180deg, #2f56ff 0%, #0b0f1e 100%);
+}
+
+.row {
+  display: flex;
+  flex-direction: column; /* apila verticalmente */
+  align-items: center; /* centra horizontalmente */
+  gap: 0.6rem; /* espacio entre elementos */
+  margin-top: 1rem;
+}
+
+.btn {
+  appearance: none;
+  border: 0;
+  background: linear-gradient(180deg, var(--accent), #4e77ff);
+  color: white;
+  padding: 1.1rem 1.6rem;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: transform 0.06s ease, filter 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 10px 22px rgba(78, 119, 255, 0.25);
+}
+.btn:hover {
+  transform: scale(1.1); /* agranda 10% */
+  font-weight: 800;
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(0.2);
+  box-shadow: none;
+}
+.btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+footer {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/*inicio pantalla 2*/
+.screen-hidden {
+  display: none;
+}
+
+.countdown {
+  font-size: min(30vw, 30vh); /*ocupa casi toda la pantalla en mobile*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.7);
+}
+
+.countdown-anim {
+  animation: countdown-pop 0.9s ease-in-out forwards;
+}
+@keyframes countdown-pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+.grid-board {
+  margin-top: 1rem;
+}
+
+.board-cell {
+  aspect-ratio: 1 / 1; /* cuadrado */
+  background: #ffffff;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.4rem;
+  border-radius: 0.5rem;
+  user-select: none;
+}
+/*fin pantalla 2*/
+
+/* inicio pantalla 3, aparicion de letras */
+/* es magico: le puse screen-3 dentro de section y me tomo el 100vw */
+.screen-3 {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 0.3rem dashed green; */
+}
+
+#screen-letters {
+  width: 100vw;
+  /* display: flex;
+  justify-content: center;
+  margin-top: 2rem; */
+  /* border: 0.5rem dashed red; */
+}
+
+/* Marco general estilo Boggle */
+.boggle-frame {
+  background: #f36c21; /* Naranja tipo Boggle */
+  padding: 1.5rem;
+  border-radius: 20px;
+  border: 8px solid #444;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  /* border: 0.5rem dashed white; */
+}
+
+/* Tablero */
+.board {
+  display: grid;
+  gap: 0.5rem;
+  background: #1b1b1b;
+  padding: 10px;
+  border-radius: 10px;
+  border: 0.3rem solid #000;
+  /* border: 0.5rem dashed green; */
+}
+
+/* Cada casilla */
+.cell {
+  width: 60px;
+  height: 60px;
+  background: #fff;
+  border-radius: 8px;
+  border: 3px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px #888;
+}
+
+.cell-letter {
+  font-size: 2.2rem;
+  font-weight: 900;
+  font-family: "Arial Black", sans-serif;
+  color: #000000da;
+}
+
+/*INICIO. Animacion de letras vibrando*/
+
+/* clase que se activará en los últimos 10 segundos */
+.cell-letter.vibrate {
+  animation: letter-vibrate 0.15s infinite;
+}
+
+/* mantiene la rotación original y suma una pequeña “sacudida” */
+@keyframes letter-vibrate {
+  0% {
+    transform: rotate(var(--angle, 0deg)) translate(0, 0);
+  }
+  25% {
+    transform: rotate(var(--angle, 0deg)) translate(1px, -1px);
+  }
+  50% {
+    transform: rotate(var(--angle, 0deg)) translate(-1px, 1px);
+  }
+  75% {
+    transform: rotate(var(--angle, 0deg)) translate(1px, 1px);
+    opacity: 0.25;
+  }
+  100% {
+    transform: rotate(var(--angle, 0deg)) translate(0, 0);
+    opacity: 0;
+  }
+}
+/* FIN. ANIMACION LETRAS VIBRANDO*/
+
+.logo-pantalla3 {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.side-timer {
+  /* border: 0.5rem dashed green; */
+}
+.circle-container {
+  /* border: 0.5rem dashed yellow; */
+}
+
+/* copie desde aca */
+svg {
+  transform: rotate(-90deg); /* Start at the top of the circle */
+}
+.circle-background {
+  fill: none;
+  stroke: #e0e0e0;
+  stroke-width: 10;
+}
+.circle-progress {
+  fill: none;
+  stroke: #f36c21;
+  stroke-width: 10;
+  stroke-dasharray: 283; /* Circumference of the circle */
+  stroke-dashoffset: 0; /* Initial offset, starts fully filled */
+  transition: stroke-dashoffset 1s linear;
+}
+.cuentaregres2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  fill: white;
+  font-size: 2rem;
+}
+/* aca termine de copiar */
+
+/* boton impresion de pantalla */
+.imp-pantalla {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border: 0.5rem dashed yellow; */
+}
+
+#capture-btn {
+  animation: none;
+  transition: none;
+  border: 0;
+  background: linear-gradient(180deg, var(--accent), #4e77ff);
+  color: white;
+  padding: 1.1rem 1.6rem;
+  border-radius: var(--radius);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(78, 119, 255, 0.25);
+}
+/* fin de pantalla 3, desaparicion de letras */
+@media (min-width: 768px) {
+  h1 {
+    font-size: 32px;
+  }
+  .logo {
+    width: 64px;
+    height: 64px;
+    font-size: 24px;
+  }
+}
